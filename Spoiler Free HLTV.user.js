@@ -8,6 +8,7 @@
 // @grant        none
 // ==/UserScript==
 
+var spoilerShown = false;
 function toggleSpoilers(){
     if (spoilerShown){
         //hide
@@ -24,12 +25,12 @@ function hideSpoilers(){
     var onResultsPage = window.location.pathname == "/results/";
     var onMatchPage = window.location.pathname.includes("/match/");
     
-	if(onMatchPage){
+    if(onMatchPage){
         jQuery(".matchScore").hide();
         jQuery("img ").css('opacity', '1');
-		jQuery(jQuery(".hotmatchbox.hotmatchbox")[0]).find(".hotmatchbox").hide();
-		jQuery("#statsContainer").hide();
-		jQuery(".tab_group2 > .tab_group3 > .tab_content").hide();
+        jQuery(jQuery(".hotmatchbox.hotmatchbox")[0]).find(".hotmatchbox").hide();
+        jQuery("#statsContainer").hide();
+        jQuery(".tab_group2 > .tab_group3 > .tab_content").hide();
     }else if(onStartPage){
         $("div.teams > div:nth-child(2n)").hide();
     }else if(onResultsPage){
@@ -42,14 +43,18 @@ function showSpoilers(){
     var onMatchPage = window.location.pathname.includes("/match/");
 
     if (onStartPage){
-        jQuery("div.teams > div:nth-child(2n)").show();
+       $("div.teams > div:nth-child(2n)").show();
     }else if(onResultsPage){
         jQuery(".resultLoser, .resultWinner, .resultDraw").show();
     }else if(onMatchPage){
-        jQuery(".matchScore").show();
+         jQuery(".matchScore").show();
+        //cant fix the opacity with this implementation
+        jQuery(".hotmatchbox").show();
+        jQuery("#statsContainer").show();
+        jQuery(".tab_content").show();
     }
 }
 
 hideSpoilers();
-//jQuery("<div onclick=\"toggleSpoilers\" id='toggle_spoiler' style='display:inline;cursor:pointer;padding-left:25px; color:red'>Toggle Spoilers</div>").insertAfter("#loginButton");
-//var spoilerShown = false;
+jQuery("<div id='toggle_spoiler' style='display:inline;cursor:pointer;padding-left:25px; color:red'>Toggle Spoilers</div>").insertAfter("#loginButton");
+jQuery("#toggle_spoiler").click(toggleSpoilers);
